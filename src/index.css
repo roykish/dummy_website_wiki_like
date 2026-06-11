@@ -1,0 +1,132 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ── Design tokens ── */
+@theme {
+  --font-sans: 'Google Sans', 'DM Sans', 'Calibri', Arial, sans-serif;
+  --font-serif: Georgia, 'Times New Roman', serif;
+
+  /* Brand */
+  --color-wiki-blue: #3366cc;
+  --color-wiki-blue-hover: #2a55b0;
+  --color-wiki-navy: #1d2d44;
+  --color-wiki-navy-accent: #8aa3bc;
+
+  /* Borders / chrome */
+  --color-wiki-border: #a2a9b1;
+  --color-wiki-border-light: #dde3e8;
+  --color-wiki-header-bg: #eaecf0;
+
+  /* Text */
+  --color-wiki-text: #202122;
+  --color-wiki-text-secondary: #54595d;
+  --color-wiki-text-muted: #72777d;
+  --color-wiki-text-faint: #9aa0a6;
+  --color-wiki-text-dark: #3d4549;
+
+  /* Backgrounds */
+  --color-wiki-bg-page: #f4f6f8;
+  --color-wiki-bg-subtle: #f8f9fa;
+  --color-wiki-bg-hover: #f0f4f8;
+  --color-wiki-bg-row-hover: #f0f5fb;
+
+  /* Status */
+  --color-status-critical: #b32424;
+  --color-status-critical-strong: #cc3333;
+  --color-status-warning: #ac6600;
+  --color-status-warning-strong: #b45309;
+  --color-status-ok: #14866d;
+  --color-status-ok-strong: #2e7d32;
+
+  /* Alert banners */
+  --color-alert-amber-bg: #fef6e4;
+  --color-alert-red-bg: #fee7e6;
+}
+
+@theme inline {
+  --font-heading: var(--font-serif);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #202122;
+  --card: #ffffff;
+  --card-foreground: #202122;
+  --popover: #ffffff;
+  --popover-foreground: #202122;
+  --primary: #3366cc;
+  --primary-foreground: #ffffff;
+  --secondary: #eaecf0;
+  --secondary-foreground: #3d4549;
+  --muted: #f8f9fa;
+  --muted-foreground: #54595d;
+  --accent: #f0f4f8;
+  --accent-foreground: #1d2d44;
+  --destructive: #cc3333;
+  --border: #a2a9b1;
+  --input: #a2a9b1;
+  --ring: #3366cc;
+  /* Wiki visual language: borders define structure, no rounded corners */
+  --radius: 0rem;
+
+  /* Sidebar (matches former hsl(...) values from .sidebar / .nav-item) */
+  --sidebar: hsl(0, 0%, 98.5%);
+  --sidebar-foreground: hsl(240, 5.3%, 28%);
+  --sidebar-primary: #3366cc;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: hsl(240, 5%, 93%);
+  --sidebar-accent-foreground: hsl(240, 5.9%, 10%);
+  --sidebar-border: hsl(220, 13%, 91%);
+  --sidebar-ring: #3366cc;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans text-sm;
+  }
+}
+
+a {
+  color: var(--color-wiki-blue);
+  text-decoration: none;
+  cursor: pointer;
+}
+a:hover {
+  text-decoration: underline;
+}
