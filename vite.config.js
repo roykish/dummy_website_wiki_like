@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  base: '/dummy_pos_wiki_style/',
+  base: '/dummy_website_wiki_like/',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
