@@ -18,7 +18,15 @@ import {
   SidebarMenuSub,
   SidebarMenuSubItem,
   SidebarMenuSubButton,
+  useSidebar,
 } from '@/components/ui/sidebar';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from '@/components/ui/sheet';
 
 const NAV = [
   {
@@ -118,30 +126,13 @@ function getParentId(pageId) {
   return null;
 }
 
-export default function AppSidebar({ active, onNavigate }) {
-  const [open, setOpen] = useState(() => {
-    const parent = getParentId(active);
-    return new Set(parent ? [parent] : []);
-  });
-
-  useEffect(() => {
-    const parent = getParentId(active);
-    if (parent) setOpen(prev => new Set([...prev, parent]));
-  }, [active]);
-
-  const toggle = (id) =>
-    setOpen(prev => {
-      const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
-
+function SidebarNavContent({ active, onNavigate, open, toggle }) {
   return (
-    <Sidebar collapsible="none" style={{ '--sidebar-width': '242px' }} className="border-r border-sidebar-border">
+    <>
       <SidebarContent>
         {NAV.map((section, i) => (
-          <SidebarGroup key={i}>
-            {section.group && <SidebarGroupLabel>{section.group}</SidebarGroupLabel>}
+          <SidebarGroup key={i} className="px-0">
+            {section.group && <SidebarGroupLabel className="px-4">{section.group}</SidebarGroupLabel>}
             <SidebarGroupContent>
               <SidebarMenu>
                 {section.items.map(item => {
@@ -153,6 +144,7 @@ export default function AppSidebar({ active, onNavigate }) {
                     <SidebarMenuItem key={item.id}>
                       <SidebarMenuButton
                         isActive={isParentActive}
+                        className="px-4"
                         onClick={() => {
                           if (item.children) toggle(item.id);
                           else onNavigate(item.id);
@@ -170,10 +162,10 @@ export default function AppSidebar({ active, onNavigate }) {
                       </SidebarMenuButton>
 
                       {item.children && isOpen && (
-                        <SidebarMenuSub>
+                        <SidebarMenuSub className="mx-0 translate-x-0 border-l-0 px-0">
                           {item.children.map(child => (
                             <SidebarMenuSubItem key={child.id}>
-                              <SidebarMenuSubButton asChild isActive={active === child.id}>
+                              <SidebarMenuSubButton asChild isActive={active === child.id} className="w-full translate-x-0 pl-10 pr-4">
                                 <button type="button" onClick={() => onNavigate(child.id)}>
                                   {child.label}
                                 </button>
@@ -196,6 +188,60 @@ export default function AppSidebar({ active, onNavigate }) {
         {store.manager}<br />
         {store.phone}
       </SidebarFooter>
-    </Sidebar>
+    </>
+  );
+}
+
+export default function AppSidebar({ active, onNavigate }) {
+  const { openMobile, setOpenMobile } = useSidebar();
+
+  const [open, setOpen] = useState(() => {
+    const parent = getParentId(active);
+    return new Set(parent ? [parent] : []);
+  });
+
+  useEffect(() => {
+    const parent = getParentId(active);
+    if (parent) setOpen(prev => new Set([...prev, parent]));
+  }, [active]);
+
+  const toggle = (id) =>
+    setOpen(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+
+  const navigate = (id) => {
+    onNavigate(id);
+    setOpenMobile(false);
+  };
+
+  return (
+    <>
+      {/* Desktop: always-visible, in-flow sidebar */}
+      <Sidebar
+        collapsible="none"
+        style={{ '--sidebar-width': '242px' }}
+        className="hidden border-r border-sidebar-border md:flex"
+      >
+        <SidebarNavContent active={active} onNavigate={navigate} open={open} toggle={toggle} />
+      </Sidebar>
+
+      {/* Mobile: off-canvas drawer triggered by TopBar hamburger */}
+      <Sheet open={openMobile} onOpenChange={setOpenMobile}>
+        <SheetContent
+          side="left"
+          showCloseButton={false}
+          className="w-[260px] gap-0 border-sidebar-border bg-sidebar p-0 text-sidebar-foreground sm:max-w-none"
+        >
+          <SheetHeader className="sr-only">
+            <SheetTitle>Navigation</SheetTitle>
+            <SheetDescription>Site navigation menu</SheetDescription>
+          </SheetHeader>
+          <SidebarNavContent active={active} onNavigate={navigate} open={open} toggle={toggle} />
+        </SheetContent>
+      </Sheet>
+    </>
   );
 }

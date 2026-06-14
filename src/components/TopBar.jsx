@@ -1,4 +1,6 @@
+import { Menu } from 'lucide-react';
 import { store, systemUsers } from '@/data/dummy';
+import { useSidebar } from '@/components/ui/sidebar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,15 +26,24 @@ const SEVERITY_DOT = {
 
 export default function TopBar({ navigate, onLogout }) {
   const criticalCount = NOTIFICATIONS.filter(n => n.type === 'critical').length;
+  const { toggleSidebar } = useSidebar();
 
   return (
     <div className="flex h-[50px] shrink-0 items-center justify-between bg-wiki-navy px-5">
-      <div className="text-[1.15em] font-bold tracking-wide text-white">
-        RetailOS <span className="ml-2 text-[0.78em] font-normal text-wiki-navy-accent">Point of Sale</span>
+      <div className="flex items-center gap-3 text-[1.15em] font-bold tracking-wide text-white">
+        <button
+          type="button"
+          onClick={toggleSidebar}
+          aria-label="Toggle navigation menu"
+          className="-ml-1.5 cursor-pointer p-1 text-wiki-navy-accent hover:text-white md:hidden"
+        >
+          <Menu size={20} strokeWidth={1.8} />
+        </button>
+        RetailOS <span className="ml-2 hidden text-[0.78em] font-normal text-wiki-navy-accent sm:inline">Point of Sale</span>
       </div>
 
       <div className="flex items-center gap-3.5 text-[0.88em]">
-        <div className="flex border border-white/20">
+        <div className="hidden border border-white/20 sm:flex">
           <input
             type="text"
             placeholder="Search…"
@@ -43,7 +54,7 @@ export default function TopBar({ navigate, onLogout }) {
           </button>
         </div>
 
-        <div className="h-[18px] w-px bg-white/[0.18]" />
+        <div className="hidden h-[18px] w-px bg-white/[0.18] sm:block" />
 
         {/* Notification bell */}
         <DropdownMenu>
@@ -93,7 +104,7 @@ export default function TopBar({ navigate, onLogout }) {
               <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-wiki-blue text-[10px] font-bold text-white">
                 {initials}
               </span>
-              <span>{store.manager}</span>
+              <span className="hidden sm:inline">{store.manager}</span>
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" sideOffset={10} className="min-w-[240px] rounded-none border-wiki-border p-0 shadow-[0_2px_6px_rgba(0,0,0,0.12)]">

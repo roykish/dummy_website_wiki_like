@@ -64,14 +64,17 @@ export default function App() {
   }
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden">
+    <SidebarProvider
+      className="h-screen min-h-0 w-full flex-col overflow-hidden"
+      style={{ '--sidebar-width': '242px' }}
+    >
       <TopBar navigate={setPage} onLogout={() => { setLoggedIn(false); setPage('dashboard'); }} />
-      <SidebarProvider className="min-h-0 flex-1">
+      <div className="flex min-h-0 flex-1">
         <AppSidebar active={page} onNavigate={setPage} />
         <main className="flex-1 overflow-y-auto px-6 pt-5 pb-8">
           <Page navigate={setPage} />
         </main>
-      </SidebarProvider>
-    </div>
+      </div>
+    </SidebarProvider>
   );
 }
